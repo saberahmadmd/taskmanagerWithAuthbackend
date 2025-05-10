@@ -24,8 +24,21 @@ const io = new Server(server, {
   }
 });
 
-// Middleware
-app.use(cors());
+const allowedOrigins = [
+  'https://taskmanager-with-auth-frontend.vercel.app',
+  'https://taskmanager-with-auth-frontend-md-saber-ahmads-projects.vercel.app'
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+
 app.use(express.json());
 
 // Routes
